@@ -2,21 +2,29 @@
 
 import child_process from 'child_process'
 import util from 'util'
+import chalk from 'chalk'
+
 const exec = util.promisify(child_process.exec)
+
+function handleResult({ error, stdout, stderr }) {
+  if (error) {
+    console.error(`exec error: ${chalk.red(error)}`)
+    return false
+  }
+  if (stderr) {
+    console.error(`stderr: ${chalk.red(stderr)}`)
+  }
+  console.log(chalk.green(stdout))
+  return true
+}
 
 export default function gitpush(program) {
   program
     .command('gitpush <commitDesc>')
     .description('执行git add/commit/push到服务器')
     .action(async (commitDesc) => {
-      let { error, stdout, stderr } = await exec(
-        `git add . && git commit -m "${commitDesc}" && git push`
-      )
-      if (error) {
-        console.error(`exec error: ${error}`)
-        return
-      }
-      console.log(stdout)
-      console.error(`stderr: ${stderr}`)
+      handleResult(await exec('git add . ')) &&
+        handleResult(await exec(`git commit -m "${commitDesc}"`)) &&
+        handleResult(await exec('git push'))
     })
 }
