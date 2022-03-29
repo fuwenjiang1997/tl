@@ -8,7 +8,7 @@ const exec = util.promisify(child_process.exec)
 
 // { error, stdout, stderr }
 function handleResult({ error, stdout }) {
-  console.log('-------------------分  割  线--------------------')
+  console.log('\n', '-------------------分  割  线--------------------')
   if (error) {
     console.error(`exec error: ${chalk.red(error)}`)
     return false
@@ -24,11 +24,13 @@ export default function gitpush(program) {
     .action(async (commitDesc) => {
       try {
         let { error, stdout } = await exec('git status')
-        if (!error && stdout) {
+        if (error) {
+          console.error(`exec error: ${chalk.red(error)}`)
+        } else {
           let changeFilesStr = stdout.match(/\n\n(\s|\S)*?\n\n/gi)[0]
           changeFilesStr = changeFilesStr.replaceAll('\n\n', '')
           const onBranchStr = stdout.match(/^(On branch \S+)\n/gi)[0]
-          console.log('-------------------分  割  线--------------------')
+          console.log('\n', '-------------------分  割  线--------------------')
           console.log('\n', onBranchStr)
           console.log(chalk.red(changeFilesStr))
         }
