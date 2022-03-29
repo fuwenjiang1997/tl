@@ -50,10 +50,10 @@ export default function gitpush(program) {
           shell: true,
         })
         push.stdout.on('data', (data) => {
-          console.log('data22 >>>> ', data)
+          console.log(chalk.blue(`${data}`))
         })
-        push.stdout.on('error', (err) => {
-          console.log(console.log(chalk.red(err)))
+        push.on('error', (err) => {
+          console.log(chalk.red(err))
         })
         push.on('close', (code) => {
           console.log(`child process exited with code ${code}`)
