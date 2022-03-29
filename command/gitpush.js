@@ -65,7 +65,7 @@ export default function gitpush(program) {
           console.log(chalk.blue(`${data}`))
         })
         push.stderr.on('data', (err) => {
-          console.log('stderr: ', chalk.red(err))
+          // console.log('stderr: ', chalk.red(err))
         })
         push.on('error', (err) => {
           console.log('error: ', chalk.red(err))
