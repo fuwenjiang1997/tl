@@ -23,8 +23,12 @@ export default function gitpush(program) {
     .command('gitpush <commitDesc>')
     .description('执行git add/commit/push到服务器')
     .action(async (commitDesc) => {
-      handleResult(await exec('git add . ')) &&
-        handleResult(await exec(`git commit -m "${commitDesc}"`)) &&
-        handleResult(await exec('git push'))
+      try {
+        handleResult(await exec('git add . ')) &&
+          handleResult(await exec(`git commit -m "${commitDesc}"`)) &&
+          handleResult(await exec('git push'))
+      } catch (err) {
+        console.error(`exec err: ${chalk.red(err)}`)
+      }
     })
 }
