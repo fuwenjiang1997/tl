@@ -30,12 +30,17 @@ export default function gitpush(program) {
         if (error) {
           console.error(`exec error: ${chalk.red(error)}`)
         } else {
-          let changeFilesStr = stdout.match(/\n\n(\s|\S)*?\n\n/gi)[0]
-          changeFilesStr = changeFilesStr.replaceAll('\n\n', '')
-          const onBranchStr = stdout.match(/^(On branch \S+)\n/gi)[0]
-          console.log('\n', '-------------------分  割  线--------------------')
-          console.log('\n', onBranchStr)
-          console.log(chalk.red(changeFilesStr))
+          let changeFilesStr = stdout.match(/\n\n(\s|\S)*?\n\n/gi)?.[0]
+          if (changeFilesStr) {
+            changeFilesStr = changeFilesStr.replaceAll('\n\n', '')
+            const onBranchStr = stdout.match(/^(On branch \S+)\n/gi)[0]
+            console.log(
+              '\n',
+              '-------------------分  割  线--------------------'
+            )
+            console.log('\n', onBranchStr)
+            console.log(chalk.red(changeFilesStr))
+          }
         }
 
         handleResult(await exec('git add . ')) &&
