@@ -11,9 +11,9 @@ function handleResult({ error, stdout, stderr }) {
     console.error(`exec error: ${chalk.red(error)}`)
     return false
   }
-  if (stderr) {
-    console.error(`stderr: ${chalk.red(stderr)}`)
-  }
+  // if (stderr) {
+  //   console.error(`stderr: ${chalk.red(stderr)}`)
+  // }
   console.log(chalk.green(stdout))
   return true
 }
