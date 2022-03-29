@@ -10,7 +10,7 @@
 
 git clone https://github.com/bfclouds/tl.git
 cd tl
-npm i && npm i -g
+npm i -g
 
 ```
 
