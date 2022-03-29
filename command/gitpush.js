@@ -3,7 +3,6 @@
 import child_process from 'child_process'
 import util from 'util'
 const exec = util.promisify(child_process.exec)
-// import fs from 'fs'
 
 export default function gitpush(program) {
   program
