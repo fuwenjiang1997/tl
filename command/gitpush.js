@@ -5,9 +5,12 @@ import util from 'util'
 import chalk from 'chalk'
 
 const exec = util.promisify(child_process.exec)
+const { spawn } = child_process
 
-// { error, stdout, stderr }
 function handleResult({ error, stdout }) {
+  if (!error && !stdout) {
+    return true
+  }
   console.log('\n', '-------------------分  割  线--------------------')
   if (error) {
     console.error(`exec error: ${chalk.red(error)}`)
@@ -36,8 +39,15 @@ export default function gitpush(program) {
         }
 
         handleResult(await exec('git add . ')) &&
-          handleResult(await exec(`git commit -m "${commitDesc}"`)) &&
-          handleResult(await exec('git push'))
+          handleResult(await exec(`git commit -m "${commitDesc}"`))
+
+        const push = spawn('git push')
+        push.stdout.on('data', (data) => {
+          console.log(data)
+        })
+        push.on('close', (code) => {
+          console.log(`child process exited with code ${code}`)
+        })
       } catch (err) {
         console.error(`exec err: ${chalk.red(err)}`)
       }
