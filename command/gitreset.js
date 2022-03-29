@@ -9,7 +9,7 @@ export default function (program) {
     .description('执行回退到上一个版本')
     .action(() => {
       try {
-        const gitreset = spawn('git reset', ['HEAD^'], {
+        const gitreset = spawn('git reset', ['--hard', 'HEAD'], {
           shell: true,
         })
         gitreset.stdout.on('data', (data) => {
