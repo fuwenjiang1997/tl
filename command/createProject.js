@@ -1,13 +1,5 @@
-#!/usr/bin/env node
-
 import inquirer from 'inquirer'
 let prompList = [
-  {
-    type: 'input', // 密码为密文输入
-    message: '项目名称：',
-    name: 'projectName',
-    default: 'newProject',
-  },
   {
     type: 'list',
     name: 'template',
@@ -56,6 +48,22 @@ let prompList = [
   },
 ]
 
-inquirer.prompt(prompList).then((answers) => {
-  console.log(answers) // 返回的结果
-})
+export default function createProject(program) {
+  program
+    .command('create [projectName]')
+    .description('创建新项目')
+    .action((projectName) => {
+      if (!projectName) {
+        prompList.unshift({
+          type: 'input',
+          message: '项目名称：',
+          name: 'projectName',
+          default: 'newProject',
+        })
+      }
+
+      inquirer.prompt(prompList).then((answers) => {
+        console.log({ projectName, ...answers }) // 返回的结果，做处理
+      })
+    })
+}
