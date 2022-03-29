@@ -1,7 +1,8 @@
 import chalk from 'chalk'
 import child_process from 'child_process'
+import util from 'util'
 
-const { exec } = child_process
+const exec = util.promisify(child_process.exec)
 
 export default function (program) {
   program
