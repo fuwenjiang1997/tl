@@ -46,7 +46,9 @@ export default function gitpush(program) {
         handleResult(await exec('git add . ')) &&
           handleResult(await exec(`git commit -m "${commitDesc}"`))
 
-        const push = spawn('git push')
+        const push = spawn('git push', {
+          shell: true,
+        })
         push.stdout.on('data', (data) => {
           console.log(data)
         })
