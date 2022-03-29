@@ -46,11 +46,16 @@ export default function gitpush(program) {
         handleResult(await exec('git add . ')) &&
           handleResult(await exec(`git commit -m "${commitDesc}"`))
 
+        console.log('\n', '-------------------分  割  线--------------------')
+
         const push = spawn('git push', {
           shell: true,
         })
         push.stdout.on('data', (data) => {
           console.log(chalk.blue(`${data}`))
+        })
+        push.stderr.on('data', (err) => {
+          console.log(chalk.red(err))
         })
         push.on('error', (err) => {
           console.log(chalk.red(err))
