@@ -6,14 +6,13 @@ import chalk from 'chalk'
 
 const exec = util.promisify(child_process.exec)
 
-function handleResult({ error, stdout, stderr }) {
+// { error, stdout, stderr }
+function handleResult({ error, stdout }) {
+  console.log('-------------------分  割  线--------------------')
   if (error) {
     console.error(`exec error: ${chalk.red(error)}`)
     return false
   }
-  // if (stderr) {
-  //   console.error(`stderr: ${chalk.red(stderr)}`)
-  // }
   console.log(chalk.green(stdout))
   return true
 }
@@ -24,8 +23,17 @@ export default function gitpush(program) {
     .description('执行git add/commit/push到服务器')
     .action(async (commitDesc) => {
       try {
-        handleResult(await exec('git status')) &&
-          handleResult(await exec('git add . ')) &&
+        let { error, stdout } = await exec('git status')
+        if (!error && stdout) {
+          let changeFilesStr = stdout.match(/\n\n(\s|\S)*?\n\n/gi)[0]
+          changeFilesStr = changeFilesStr.replaceAll('\n\n', '')
+          const onBranchStr = stdout.match(/^(On branch \S+)\n/gi)[0]
+          console.log('-------------------分  割  线--------------------')
+          console.log('\n', onBranchStr)
+          console.log(chalk.red(changeFilesStr))
+        }
+
+        handleResult(await exec('git add . ')) &&
           handleResult(await exec(`git commit -m "${commitDesc}"`)) &&
           handleResult(await exec('git push'))
       } catch (err) {

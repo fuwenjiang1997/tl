@@ -4,5 +4,6 @@ export function randomString(e) {
     a = t.length,
     n = ''
   for (let i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a))
+  console.log('234')
   return n
 }
