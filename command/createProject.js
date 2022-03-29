@@ -48,7 +48,7 @@ let prompList = [
   },
 ]
 
-export default function createProject(program) {
+export default function (program) {
   program
     .command('create [projectName]')
     .description('创建新项目')

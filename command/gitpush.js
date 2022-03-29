@@ -20,7 +20,7 @@ function handleResult({ error, stdout }) {
   return true
 }
 
-export default function gitpush(program) {
+export default function (program) {
   program
     .command('gitpush [commitDesc]')
     .description('执行git add/commit/push到服务器')

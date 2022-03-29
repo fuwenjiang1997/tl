@@ -2,30 +2,42 @@
 
 import { Command } from 'commander'
 import { readFile } from 'fs/promises'
-import createGotplHtml from './command/createGotplhtml.js'
-import randomCharts from './command/randomCharts.js'
-import gitpush from './command/gitpush.js'
-import createProject from './command/createProject.js'
+import fs from 'fs'
+import path from 'path'
 
-// options
-import lsAll from './options/lsAll.js'
+export const program = new Command()
 
 const packageJson = JSON.parse(
   await readFile(new URL('./package.json', import.meta.url))
 )
 
-export const program = new Command()
-
 program.version(packageJson.version, '-v, --version', 'cli的最新版本')
 
-// options
-lsAll(program)
+try {
+  // 自动导入添加command
+  const commandFiles = await fs.promises.readdir(path.join('command'))
+  for (let i = 0; i < commandFiles.length; i++) {
+    const fileName = commandFiles[i]
+    let model = await import(`./command/${fileName}`)
+    model.default(program)
+  }
+
+  // 自动导入添加options
+  const optionFiles = await fs.promises.readdir(path.join('options'))
+  for (let i = 0; i < optionFiles.length; i++) {
+    const fileName = optionFiles[i]
+    let model = await import(`./options/${fileName}`)
+    model.default(program)
+  }
+} catch (err) {
+  console.log('import err: ?>>>> ', err)
+}
 
 // command
-createGotplHtml(program)
-randomCharts(program)
-gitpush(program)
-createProject(program)
+// createGotplHtml(program)
+// randomCharts(program)
+// gitpush(program)
+// createProject(program)
 
 // program
 //   .name('command')
