@@ -50,7 +50,7 @@ export default function gitpush(program) {
           shell: true,
         })
         push.stdout.on('data', (data) => {
-          console.log(data)
+          console.log('data>>>> ', data)
         })
         push.stdout.on('error', (err) => {
           console.log(console.log(chalk.red(err)))
