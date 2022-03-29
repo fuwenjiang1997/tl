@@ -12,10 +12,10 @@ export default function (program) {
         await exec('git add .')
         const { error, stdout } = await exec('git reset --hard HEAD')
         if (error) {
-          console.log('error: ', chalk.red(err))
+          console.log('error: ', chalk.red(error))
         }
         if (stdout) {
-          console.log(chalk.blue(`${data}`))
+          console.log(chalk.blue(`${stdout}`))
         }
       } catch (err) {
         console.log(chalk.red(`err: ${err}`))

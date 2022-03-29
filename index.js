@@ -19,7 +19,9 @@ try {
   for (let i = 0; i < commandFiles.length; i++) {
     const fileName = commandFiles[i]
     let model = await import(`./command/${fileName}`)
-    model.default(program)
+    if (typeof model?.default === 'function') {
+      model.default(program)
+    }
   }
 
   // 自动导入添加options
