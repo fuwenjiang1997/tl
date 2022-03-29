@@ -10,7 +10,7 @@ export default function (program) {
     .description('执行回退到上一个版本')
     .action(async () => {
       try {
-        await exec('git add .')
+        await exec('git add .') // 解决未add的情况下不能reset
         const { error, stdout } = await exec('git reset --hard HEAD')
         if (error) {
           console.log('error: ', chalk.red(error))
