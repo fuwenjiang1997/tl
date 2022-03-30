@@ -8,7 +8,7 @@ export default function (program) {
   program
     .command('gitnewbranch <branchName>')
     .description('基于当前分支创建新分支')
-    .action(async () => {
+    .action(() => {
       try {
         // todo
       } catch (err) {
