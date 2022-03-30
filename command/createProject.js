@@ -1,5 +1,5 @@
 import inquirer from 'inquirer'
-let prompList = [
+const prompList = [
   {
     type: 'list',
     name: 'template',

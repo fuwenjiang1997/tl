@@ -5,7 +5,7 @@ import { readFile } from 'fs/promises'
 import fs from 'fs'
 import path from 'path'
 
-export const program = new Command()
+const program = new Command()
 
 const packageJson = JSON.parse(
   await readFile(new URL('./package.json', import.meta.url))
@@ -34,16 +34,4 @@ try {
 } catch (err) {
   console.log('import err: ?>>>> ', err)
 }
-
-// command
-// createGotplHtml(program)
-// randomCharts(program)
-// gitpush(program)
-// createProject(program)
-
-// program
-//   .name('command')
-//   .version('0.0.1')
-//   .command('create <project-name>', '创建项目')
-
 program.parse(process.argv)
