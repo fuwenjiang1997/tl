@@ -31,7 +31,7 @@ export default function (program) {
           const regRes = [...stdout.matchAll(/\n\n(\s|\S)*?\n\n/gi)]
           let changeFilesStr = regRes[0][0]
           if (changeFilesStr) {
-            changeFilesStr = changeFilesStr.replaceAll('\n\n', '')
+            changeFilesStr = changeFilesStr.replace(/\n\n/g, '')
             const onBranchStr = stdout.match(/^(On branch \S+)\n/gi)[0]
             console.log(
               '\n',
@@ -41,7 +41,7 @@ export default function (program) {
             console.log(chalk.red(changeFilesStr))
             if (regRes[1]?.[0]) {
               console.log('\n\tadd:\n')
-              const str = regRes[1][0].replaceAll('\n\n', '')
+              const str = regRes[1][0].replace(/\n\n/g, '')
               console.log(chalk.red(str))
             }
           }
