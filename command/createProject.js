@@ -1,50 +1,30 @@
 import inquirer from 'inquirer'
+import { exec, replaceFileContent } from '../utils.js'
+
 const prompList = [
   {
     type: 'list',
+    name: 'type',
+    message: '请选择项目类型',
+    choices: [
+      {
+        key: 'web',
+        name: 'web',
+        value: 'web',
+      },
+    ],
+  },
+  {
+    type: 'list',
     name: 'template',
-    message: '请选择你想要的小动物？',
+    message: '请选择模版',
     choices: [
       {
         key: 'a',
-        name: 'Cat',
-        value: 'cat',
-      },
-      {
-        key: 'b',
-        name: 'Dog',
-        value: 'dog',
-      },
-      {
-        key: 'c',
-        name: 'Pig',
-        value: 'pig',
+        name: 'vue3.3+eslint+prettire+pinia+vueRouter+antd+tailwind',
+        value: 'vue3-web-admin',
       },
     ],
-  },
-  {
-    type: 'checkbox',
-    message: '选择颜色:',
-    name: 'color',
-    choices: [
-      {
-        name: 'red',
-      },
-      // new inquirer.Separator(), // 添加分隔符
-      {
-        name: 'blur',
-        checked: true, // 默认选中
-      },
-      {
-        name: 'green',
-      },
-      // new inquirer.Separator("--- 分隔符 ---"), // 自定义分隔符
-    ],
-  },
-  {
-    type: 'password', // 密码为密文输入
-    message: '请输入密码：',
-    name: 'pwd',
   },
 ]
 
@@ -62,8 +42,21 @@ export default function (program) {
         })
       }
 
-      inquirer.prompt(prompList).then((answers) => {
-        console.log({ projectName, ...answers }) // 返回的结果，做处理
+      inquirer.prompt(prompList).then(async (answers) => {
+        console.log() // 返回的结果，做处理
+        if (answers.type === 'web') {
+          await exec(
+            `git clone https://github.com/fuwenjiang1997/web-admin-template.git ${projectName}`
+          )
+
+          exec(`rm -rf ./${projectName}/.git`)
+
+          replaceFileContent(
+            `./${projectName}/package.json`,
+            `"name": "web-admin"`,
+            `"name": "${projectName}"`
+          )
+        }
       })
     })
 }

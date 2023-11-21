@@ -1,9 +1,5 @@
 import chalk from 'chalk'
-import child_process from 'child_process'
-import util from 'util'
-import { handleExeRes } from '../utils.js'
-
-const exec = util.promisify(child_process.exec)
+import { handleExeRes, exec } from '../utils.js'
 
 export default function (program) {
   program
