@@ -26,7 +26,7 @@ export const exec = util.promisify(child_process.exec)
 export function replaceFileContent(filePath, regOrOldContent, newContent) {
   try {
     const content = fs.readFileSync(filePath)
-    const data = content.toString().replaceAll(regOrOldContent, newContent)
+    const data = content.toString().replace(regOrOldContent, newContent)
     fs.writeFileSync(filePath, data)
   } catch (error) {
     console.error(`replaceFileContent error: ${chalk.red(error)}`)

@@ -22,7 +22,12 @@ const prompList = [
       {
         key: 'a',
         name: 'vue3.3+eslint+prettire+pinia+vueRouter+antd+tailwind',
-        value: 'vue3-web-admin',
+        value: 'https://github.com/fuwenjiang1997/web-admin-template-antd.git',
+      },
+      {
+        key: 'b',
+        name: 'vue3.3+eslint+prettire+pinia+vueRouter+arco+tailwind',
+        value: 'https://github.com/fuwenjiang1997/web-admin-template-arco.git',
       },
     ],
   },
@@ -43,19 +48,21 @@ export default function (program) {
       }
 
       inquirer.prompt(prompList).then(async (answers) => {
-        console.log() // 返回的结果，做处理
         if (answers.type === 'web') {
-          await exec(
-            `git clone https://github.com/fuwenjiang1997/web-admin-template.git ${projectName}`
-          )
+          const { template: gitPath } = answers
+          await exec(`git clone ${gitPath} ${projectName}`)
 
           exec(`rm -rf ./${projectName}/.git`)
 
           replaceFileContent(
             `./${projectName}/package.json`,
-            `"name": "web-admin"`,
+            /"name": "\S+"/g,
             `"name": "${projectName}"`
           )
+
+          console.log(`cd ${projectName}`)
+          console.log(`pnpm install`)
+          console.log(`pnpm run dev`)
         }
       })
     })
